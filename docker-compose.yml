@@ -1,0 +1,41 @@
+version: '3.5'
+
+services:
+  english_vocabulary_cards_postgres:
+    container_name: english_vocabulary_cards_postgres
+    image: postgres:14
+    environment:
+      POSTGRES_USER: english_vocabulary_cards
+      POSTGRES_PASSWORD: english_vocabulary_cards
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/var/www/english_vocabulary_cards/docker-volumes/postgres
+    ports:
+      - 127.0.0.1:5433:5433
+    networks:
+      - english_vocabulary_cards
+    restart: unless-stopped
+
+  english_vocabulary_cards_pgadmin:
+    container_name: english_vocabulary_cards_pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: english_vocabulary_cards@admin.com
+      PGADMIN_DEFAULT_PASSWORD: english_vocabulary_cards
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - pgadmin:/var/www/english_vocabulary_cards/docker-volumes/pgadmin
+    ports:
+      - 127.0.0.1:5050:80
+    networks:
+      - english_vocabulary_cards
+    restart: unless-stopped
+
+networks:
+  english_vocabulary_cards:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
+  
