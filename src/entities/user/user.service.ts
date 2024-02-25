@@ -70,4 +70,11 @@ export class UserService {
   public async deleteUser(id: number) {
     return await this.userRepository.delete(id);
   }
+
+  async findOne(login: string) {
+    return await this.userRepository.findOne({
+      where: { login },
+      select: this.availableFields as any,
+    });
+  }
 }
