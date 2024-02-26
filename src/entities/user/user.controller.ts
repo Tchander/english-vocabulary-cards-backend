@@ -3,6 +3,7 @@ import { Response, Request } from 'express';
 
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { UserData } from './types';
 
 @Controller('users')
 export class UserController {
@@ -34,8 +35,8 @@ export class UserController {
 		@Req() req: Request,
 		@Res() res: Response,
 	) {
-		await this.userService.createUser(req.body);
-		return res.send({ status: 'ok' });
+		const data = await this.userService.createUser(req.body);
+		return res.send({ status: 'ok', data });
 	}
 
 
@@ -45,7 +46,7 @@ export class UserController {
 		@Body() body: UpdateUserDto,
 		@Res() res: Response,
 	) {
-		await this.userService.updateUserData(id, body);
+		await this.userService.updateUserData(id, body as UserData);
 		return res.send({ status: 'ok' });
 	}
 

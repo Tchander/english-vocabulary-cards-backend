@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { genSalt, hash } from 'bcrypt';
 
 import { User } from './user.entity';
 import { UserData } from './types';
+import { JwtService } from '@nestjs/jwt';
 
 type AvailableFields = Omit<UserData, 'password'>;
 
@@ -12,35 +13,29 @@ type AvailableFields = Omit<UserData, 'password'>;
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
   ) { }
 
-  // availableFields: keyof UserData = ['login'];
-  availableFields = ['login'];
-
-  // Filter body's fields from abailable fields list
-  private filterFields(body: UserData) {
-    const filteredBody: UserData = undefined;
-
-    Object.keys(body).filter((k) => {
-      if (this.availableFields.includes(k)) {
-        filteredBody[k] = body[k];
-      }
-    });
-
-    return filteredBody;
-  }
+  availableFields = ['id', 'login'];
 
   // Register new user
   public async createUser(userData: UserData) {
+    const existUser = await this.userRepository.findOne({ where: { login: userData.login }});
+
+    if (existUser) throw new BadRequestException('This login already exist');
+
     const salt = await genSalt(10);
 
     const hashedPassword = await hash(userData.password, salt);
 
-    const newUser = this.userRepository.create({
+    const newUser = await this.userRepository.save({
       ...userData,
       password: hashedPassword,
     });
-    return await this.userRepository.save(newUser);
+
+    const token = this.jwtService.sign({ login: userData.login })
+    const { id, login } = newUser;
+    return { id, login, token };
   }
 
   // Get all users
@@ -62,7 +57,7 @@ export class UserService {
   public async updateUserData(id: number, body: UserData) {
     return await this.userRepository.update(
       { id },
-      this.filterFields(body),
+      body,
     );
   }
 
@@ -72,9 +67,6 @@ export class UserService {
   }
 
   async findOne(login: string) {
-    return await this.userRepository.findOne({
-      where: { login },
-      select: this.availableFields as any,
-    });
+    return await this.userRepository.findOne({ where: { login }});
   }
 }

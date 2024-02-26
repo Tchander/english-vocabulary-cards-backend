@@ -5,8 +5,4 @@ export class UpdateUserDto {
   @IsString()
   @MinLength(3)
   login: string;
-
-  @IsNotEmpty()
-  @MinLength(4)
-  password: string;
 }
