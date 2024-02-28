@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Patch, Put, Delete, Res, Req, Param, ParseIntPipe, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Res, Req, Param, ParseIntPipe, Body } from '@nestjs/common';
 import { Response, Request } from 'express';
 
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { UserData } from './types';
+import { CreateUserDto } from './dto/createUser.dto';
 
 @Controller('users')
 export class UserController {
@@ -32,10 +32,10 @@ export class UserController {
 
 	@Post('/')
 	async createUser(
-		@Req() req: Request,
+		@Body() body: CreateUserDto,
 		@Res() res: Response,
 	) {
-		const data = await this.userService.createUser(req.body);
+		const data = await this.userService.createUser(body);
 		return res.send({ status: 'ok', data });
 	}
 
@@ -46,7 +46,7 @@ export class UserController {
 		@Body() body: UpdateUserDto,
 		@Res() res: Response,
 	) {
-		await this.userService.updateUserData(id, body as UserData);
+		await this.userService.updateUserData(id, body);
 		return res.send({ status: 'ok' });
 	}
 

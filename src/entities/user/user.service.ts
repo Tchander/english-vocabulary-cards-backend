@@ -2,12 +2,10 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { genSalt, hash } from 'bcrypt';
-
 import { User } from './user.entity';
-import { UserData } from './types';
 import { JwtService } from '@nestjs/jwt';
-
-type AvailableFields = Omit<UserData, 'password'>;
+import { UpdateUserDto } from './dto/updateUser.dto';
+import { CreateUserDto } from './dto/createUser.dto';
 
 @Injectable()
 export class UserService {
@@ -19,7 +17,7 @@ export class UserService {
   availableFields = ['id', 'login'];
 
   // Register new user
-  public async createUser(userData: UserData) {
+  public async createUser(userData: CreateUserDto) {
     const existUser = await this.userRepository.findOne({ where: { login: userData.login }});
 
     if (existUser) throw new BadRequestException('This login already exist');
@@ -54,7 +52,7 @@ export class UserService {
   }
 
   // Update user data
-  public async updateUserData(id: number, body: UserData) {
+  public async updateUserData(id: number, body: UpdateUserDto) {
     return await this.userRepository.update(
       { id },
       body,
