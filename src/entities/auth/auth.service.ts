@@ -13,21 +13,33 @@ export class AuthService {
   ) {}
 
   async validateUser(login: string, password: string) {
-    const user = await this.userService.findOne(login);
+    const user = await this.userService.findOneUser(login);
     const passwordIsMatch = await compare(password, user.password);
 
     if (user && passwordIsMatch) {
-      return { login };
+      return { login, id: user.id, categories: user.categories, cards: user.cards };
     }
     throw new UnauthorizedException();
   }
 
   async login(user: UserData) {
-    const { id, login } = user;
+    const { id, login, categories, cards } = user;
     return {
       id,
       login,
+      categories,
+      cards,
       token: this.jwtService.sign({ id, login }),
+    };
+  }
+
+  async getProfile(user: UserData) {
+    const { id, login, categories, cards } = await this.userService.findOneUser(user.login);
+    return {
+      id,
+      login,
+      categories,
+      cards,
     };
   }
 }

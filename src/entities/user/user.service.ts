@@ -10,7 +10,8 @@ import { CreateUserDto } from './dto/createUser.dto';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
   ) { }
 
@@ -64,7 +65,13 @@ export class UserService {
     return await this.userRepository.delete(id);
   }
 
-  async findOne(login: string) {
-    return await this.userRepository.findOne({ where: { login }});
+  async findOneUser(login: string) {
+    return await this.userRepository.findOne({ 
+      where: { login },
+      relations: {
+        categories: true,
+        cards: true,
+      },
+    });
   }
 }
