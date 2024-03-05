@@ -14,9 +14,9 @@ export class User {
   @Column({ name: 'password', type: 'varchar' })
   password: string;
 
-  @OneToMany(() => Category, (category) => category.user, { onDelete: 'CASCADE' })
+  @OneToMany(() => Category, (category) => category.user)
   categories: Category[];
 
-  @OneToMany(() => Card, (card) => card.user, { onDelete: 'CASCADE' })
+  @OneToMany(() => Card, (card) => card.user)
   cards: Card[];
 }

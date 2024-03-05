@@ -11,5 +11,5 @@ export class CreateCategoryDto {
   user?: User;
 
   @IsOptional()
-  cards: Card[];
+  cards?: Card[];
 }

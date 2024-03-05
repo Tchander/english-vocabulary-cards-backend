@@ -1,5 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Res, Param, ParseIntPipe, Body } from '@nestjs/common';
-import { Response } from 'express';
+import { Controller, Get, Post, Put, Delete, Param, ParseIntPipe, Body } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { CreateUserDto } from './dto/createUser.dto';
@@ -9,35 +8,30 @@ export class UserController {
 	constructor(private readonly userService: UserService) {}
 
 	@Get('/')
-	async getAllUsers(@Res() res: Response) {
-		const users = await this.userService.getAllUsers();
-		return res.send({ status: 'ok', data: users });
+	async getAllUsers() {
+		return await this.userService.getAllUsers();
 	}
 
 
 	@Get('/:id')
-	async getUser(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
-		const userData = await this.userService.getUserData(id);
-		return res.send({ status: 'ok', data: userData });
+	async getUser(@Param('id', ParseIntPipe) id: number) {
+		return await this.userService.getUserData(id);
 	}
 
 	@Post('/')
-	async createUser(@Body() body: CreateUserDto, @Res() res: Response) {
-		const data = await this.userService.createUser(body);
-		return res.send({ status: 'ok', data });
+	async createUser(@Body() body: CreateUserDto) {
+		return await this.userService.createUser(body);
 	}
 
 
 	@Put('/:id')
-	async updateUserField(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateUserDto, @Res() res: Response) {
-		await this.userService.updateUserData(id, body);
-		return res.send({ status: 'ok' });
+	async updateUserField(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateUserDto) {
+		return await this.userService.updateUserData(id, body);
 	}
 
 
 	@Delete('/:id')
-	async deleteUser(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
+	async deleteUser(@Param('id', ParseIntPipe) id: number) {
 		await this.userService.deleteUser(id);
-		return res.send({ status: 'ok' });
 	}
 }

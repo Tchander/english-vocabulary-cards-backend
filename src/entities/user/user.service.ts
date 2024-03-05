@@ -53,11 +53,13 @@ export class UserService {
   }
 
   // Update user data
-  public async updateUserData(id: number, body: UpdateUserDto) {
-    return await this.userRepository.update(
-      { id },
-      body,
-    );
+  public async updateUserData(id: number, updateUserDto: UpdateUserDto) {
+    await this.userRepository.update({ id }, updateUserDto);
+
+    return await this.userRepository.findOne({ 
+      where: { id },
+      relations: { categories: true, cards: true },
+    });
   }
 
   // Delete user
@@ -68,10 +70,7 @@ export class UserService {
   async findOneUser(login: string) {
     return await this.userRepository.findOne({ 
       where: { login },
-      relations: {
-        categories: true,
-        cards: true,
-      },
+      relations: { categories: true, cards: true },
     });
   }
 }

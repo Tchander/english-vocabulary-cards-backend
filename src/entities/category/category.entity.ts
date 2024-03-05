@@ -11,10 +11,10 @@ export class Category {
   @Column({ name: 'title', type: 'varchar' })
   title: string;
 
-  @ManyToOne(() => User, (user) => user.categories)
+  @ManyToOne(() => User, (user) => user.categories, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @OneToMany(() => Card, (card) => card.category, { onDelete: 'CASCADE' })
+  @OneToMany(() => Card, (card) => card.category)
   cards: Card[];
 }

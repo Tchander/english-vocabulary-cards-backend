@@ -11,17 +11,20 @@ export class Card {
   @Column({ name: 'label', type: 'varchar' })
   label: string;
 
-  @Column({ name: 'transcription', type: 'varchar' })
-  transcription: string;
+  @Column({ name: 'transcription', type: 'varchar', array: true, nullable: true })
+  transcription: string[] | null;
 
-  @Column({ name: 'examples', type: 'varchar' })
-  examples: string[];
+  @Column({ name: 'description', type: 'varchar' })
+  description: string;
 
-  @ManyToOne(() => User, (user) => user.cards)
+  @Column({ name: 'examples', type: 'varchar', array: true, nullable: true })
+  examples: string[] | null;
+
+  @ManyToOne(() => User, (user) => user.cards , { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Category, (category) => category.cards)
+  @ManyToOne(() => Category, (category) => category.cards , { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'category_id' })
   category: Category;
 }
