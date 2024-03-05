@@ -41,6 +41,7 @@ export class UserService {
   public async getAllUsers() {
     return await this.userRepository.find({
       select: this.availableFields as any,
+      relations: { categories: true, cards: true },
     });
   }
 
@@ -49,6 +50,7 @@ export class UserService {
     return await this.userRepository.findOne({ 
       where: { id },
       select: this.availableFields as any,
+      relations: { categories: true, cards: true },
     });
   }
 
