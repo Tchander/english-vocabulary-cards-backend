@@ -1,6 +1,14 @@
 import { Category } from '@entities/category/category.entity';
 import { User } from '@entities/user/user.entity';
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm'
+import { 
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 
 @Entity('cards')
@@ -27,4 +35,10 @@ export class Card {
   @ManyToOne(() => Category, (category) => category.cards , { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'category_id' })
   category: Category;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 }

@@ -1,6 +1,15 @@
 import { Card } from '@entities/cards/card.entity';
 import { User } from '@entities/user/user.entity';
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, JoinColumn } from 'typeorm'
+import { 
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 
 @Entity('categories')
@@ -17,4 +26,10 @@ export class Category {
 
   @OneToMany(() => Card, (card) => card.category)
   cards: Card[];
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 }
