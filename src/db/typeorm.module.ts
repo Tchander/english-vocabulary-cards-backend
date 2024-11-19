@@ -12,7 +12,7 @@ import { TypeOrmModule as NestTypeOrmModule } from '@nestjs/typeorm';
       database: process.env.POSTGRES_DATABASE,
       entities: ['dist/entities/**/*.entity.js'],
       synchronize: true, // true - позволяет автоматически переформировывать структуру базы данных
-      // migrations: [ 'dist/db/migrations/**/*.js' ],
+      // migrations: ['dist/db/migrations/**/*.js'],
       // cli: { migrationsDir: 'src/db/migrations' },
     }),
   ],

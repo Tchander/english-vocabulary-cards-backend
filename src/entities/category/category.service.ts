@@ -21,9 +21,10 @@ export class CategoryService {
     if (isExist.length)
       throw new BadRequestException('This category already exist');
 
-    const newCategory = { title: createCategoryDto.title, user: { id } };
-
-    return await this.categoryRepository.save(newCategory);
+    return await this.categoryRepository.save({
+      title: createCategoryDto.title,
+      user: { id },
+    });
   }
 
   async findAllCategories(id: number) {

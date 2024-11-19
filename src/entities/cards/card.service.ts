@@ -26,16 +26,14 @@ export class CardService {
     if (isExist.length)
       throw new BadRequestException('This card already exist');
 
-    const newCard = {
+    return await this.cardRepository.save({
       label: createCardDto.label,
       description: createCardDto.description,
       transcription: createCardDto.transcription,
       examples: createCardDto.examples,
       user: { id: userId },
       category: { id: categoryId },
-    };
-
-    return await this.cardRepository.save(newCard);
+    });
   }
 
   async findAllCards(id: number) {
