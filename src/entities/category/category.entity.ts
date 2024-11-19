@@ -1,6 +1,6 @@
 import { Card } from '@entities/cards/card.entity';
 import { User } from '@entities/user/user.entity';
-import { 
+import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
@@ -9,8 +9,7 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
-} from 'typeorm'
-
+} from 'typeorm';
 
 @Entity('categories')
 export class Category {

@@ -1,7 +1,6 @@
 import { Card } from '@entities/cards/card.entity';
 import { Category } from '@entities/category/category.entity';
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
-
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity('users')
 export class User {

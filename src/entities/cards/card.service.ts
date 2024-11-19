@@ -12,14 +12,19 @@ export class CardService {
     private readonly cardRepository: Repository<Card>,
   ) {}
 
-  async createCard(createCardDto: CreateCardDto, userId: number, categoryId: number) {
+  async createCard(
+    createCardDto: CreateCardDto,
+    userId: number,
+    categoryId: number,
+  ) {
     const isExist = await this.cardRepository.findBy({
       user: { id: userId },
       category: { id: categoryId },
       label: createCardDto.label,
     });
 
-    if (isExist.length) throw new BadRequestException('This card already exist');
+    if (isExist.length)
+      throw new BadRequestException('This card already exist');
 
     const newCard = {
       label: createCardDto.label,

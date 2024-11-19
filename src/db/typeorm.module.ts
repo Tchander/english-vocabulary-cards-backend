@@ -1,6 +1,5 @@
-import { Module } from '@nestjs/common'
-import { TypeOrmModule as NestTypeOrmModule } from '@nestjs/typeorm'
-
+import { Module } from '@nestjs/common';
+import { TypeOrmModule as NestTypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -15,7 +14,7 @@ import { TypeOrmModule as NestTypeOrmModule } from '@nestjs/typeorm'
       synchronize: true, // true - позволяет автоматически переформировывать структуру базы данных
       // migrations: [ 'dist/db/migrations/**/*.js' ],
       // cli: { migrationsDir: 'src/db/migrations' },
-    })
-  ]
+    }),
+  ],
 })
 export class TypeOrmModule {}

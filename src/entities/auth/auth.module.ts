@@ -8,16 +8,19 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserModule } from '@entities/user/user.module';
 
-
 @Module({
-  imports: [UserModule, PassportModule, JwtModule.registerAsync({
-    imports: [ConfigModule],
-    useFactory: () => ({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '30d' },
+  imports: [
+    UserModule,
+    PassportModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: () => ({
+        secret: process.env.JWT_SECRET,
+        signOptions: { expiresIn: '30d' },
+      }),
+      inject: [ConfigService],
     }),
-    inject: [ConfigService],
-  })],
+  ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],

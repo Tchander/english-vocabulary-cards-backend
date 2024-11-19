@@ -17,7 +17,12 @@ export class AuthService {
     const passwordIsMatch = await compare(password, user.password);
 
     if (user && passwordIsMatch) {
-      return { login, id: user.id, categories: user.categories, cards: user.cards };
+      return {
+        login,
+        id: user.id,
+        categories: user.categories,
+        cards: user.cards,
+      };
     }
     throw new UnauthorizedException();
   }
@@ -34,7 +39,9 @@ export class AuthService {
   }
 
   async getProfile(user: UserData) {
-    const { id, login, categories, cards } = await this.userService.findOneUser(user.login);
+    const { id, login, categories, cards } = await this.userService.findOneUser(
+      user.login,
+    );
     return {
       id,
       login,

@@ -18,7 +18,8 @@ export class CategoryService {
       title: createCategoryDto.title,
     });
 
-    if (isExist.length) throw new BadRequestException('This category already exist');
+    if (isExist.length)
+      throw new BadRequestException('This category already exist');
 
     const newCategory = { title: createCategoryDto.title, user: { id } };
 
@@ -29,7 +30,7 @@ export class CategoryService {
     return await this.categoryRepository.find({
       where: { user: { id } },
       relations: { cards: true },
-    })
+    });
   }
 
   async updateCategoryTitle(id: number, body: UpdateCategoryDto) {
@@ -37,7 +38,7 @@ export class CategoryService {
     const category = await this.categoryRepository.findOne({
       where: { id },
       relations: { cards: true },
-    })
+    });
     return category;
   }
 

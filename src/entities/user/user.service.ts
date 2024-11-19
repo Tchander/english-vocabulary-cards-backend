@@ -13,13 +13,15 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   availableFields = ['id', 'login'];
 
   // Register new user
   public async createUser(userData: CreateUserDto) {
-    const existUser = await this.userRepository.findOne({ where: { login: userData.login }});
+    const existUser = await this.userRepository.findOne({
+      where: { login: userData.login },
+    });
 
     if (existUser) throw new BadRequestException('This login already exist');
 
@@ -32,7 +34,7 @@ export class UserService {
       password: hashedPassword,
     });
 
-    const token = this.jwtService.sign({ login: userData.login })
+    const token = this.jwtService.sign({ login: userData.login });
     const { id, login } = newUser;
     return { id, login, token };
   }
@@ -47,7 +49,7 @@ export class UserService {
 
   // Get user by id
   public async getUserData(id: number) {
-    return await this.userRepository.findOne({ 
+    return await this.userRepository.findOne({
       where: { id },
       select: this.availableFields as any,
       relations: { categories: true, cards: true },
@@ -58,7 +60,7 @@ export class UserService {
   public async updateUserData(id: number, updateUserDto: UpdateUserDto) {
     await this.userRepository.update({ id }, updateUserDto);
 
-    return await this.userRepository.findOne({ 
+    return await this.userRepository.findOne({
       where: { id },
       relations: { categories: true, cards: true },
     });
@@ -70,7 +72,7 @@ export class UserService {
   }
 
   async findOneUser(login: string) {
-    return await this.userRepository.findOne({ 
+    return await this.userRepository.findOne({
       where: { login },
       relations: { categories: true, cards: true },
     });
