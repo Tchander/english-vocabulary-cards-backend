@@ -7,21 +7,25 @@ import {
   Param,
   ParseIntPipe,
   Body,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { CreateUserDto } from './dto/createUser.dto';
+import { JwtAuthGuard } from '@entities/auth/guards/jwt-auth.guard';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/')
+  @UseGuards(JwtAuthGuard)
   async getAllUsers() {
     return await this.userService.getAllUsers();
   }
 
   @Get('/:id')
+  @UseGuards(JwtAuthGuard)
   async getUser(@Param('id', ParseIntPipe) id: number) {
     return await this.userService.getUserData(id);
   }
@@ -32,6 +36,7 @@ export class UserController {
   }
 
   @Put('/:id')
+  @UseGuards(JwtAuthGuard)
   async updateUserField(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateUserDto,
@@ -40,6 +45,7 @@ export class UserController {
   }
 
   @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
   async deleteUser(@Param('id', ParseIntPipe) id: number) {
     await this.userService.deleteUser(id);
   }
