@@ -21,7 +21,9 @@ export class UserController {
   @Get('/')
   @UseGuards(JwtAuthGuard)
   async getAllUsers() {
-    return await this.userService.getAllUsers();
+    return {
+      data: await this.userService.getAllUsers(),
+    };
   }
 
   @Get('/:id')
